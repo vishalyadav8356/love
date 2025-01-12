@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Love Questions</title>
+  </head>
+  <body>
+    <style>
+      body {
+        background: linear-gradient(45deg, #ff6b6b, #ffd3d3);
+        font-family: "Arial", sans-serif;
+        overflow: hidden;
+      }
+
+      .heart {
+        position: fixed;
+        font-size: 20px;
+        animation: float 6s ease-in-out infinite;
+        opacity: 0.6;
+        z-index: -1;
+      }
+
+      @keyframes float {
+        0% {
+          transform: translateY(0) rotate(0deg);
+          opacity: 0;
+        }
+        50% {
+          opacity: 0.6;
+        }
+        100% {
+          transform: translateY(-100vh) rotate(360deg);
+          opacity: 0;
+        }
+      }
+
+      #container {
+        text-align: center;
+        margin-top: 100px;
+        padding: 40px;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 20px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+        animation: fadeIn 1s ease-in;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      #question {
+        color: #ff4d6d;
+        font-size: 2em;
+        margin-bottom: 30px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .sub-question {
+        color: #ff758f;
+        font-size: 1.3em;
+        margin: 15px 0;
+        display: none;
+      }
+
+      button {
+        padding: 15px 30px;
+        margin: 10px;
+        border: none;
+        border-radius: 50px;
+        font-size: 1.2em;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        background: #ff4d6d;
+        color: white;
+        box-shadow: 0 4px 15px rgba(255, 77, 109, 0.3);
+      }
+
+      button:hover {
+        transform: scale(1.1);
+        box-shadow: 0 6px 20px rgba(255, 77, 109, 0.4);
+      }
+
+      #yes {
+        background: #ff4d6d;
+      }
+
+      #no {
+        background: #ff4d6d;
+      }
+
+      .success-message {
+        animation: heartBeat 1.5s ease-in-out;
+      }
+
+      @keyframes heartBeat {
+        0% {
+          transform: scale(1);
+        }
+        14% {
+          transform: scale(1.3);
+        }
+        28% {
+          transform: scale(1);
+        }
+        42% {
+          transform: scale(1.3);
+        }
+        70% {
+          transform: scale(1);
+        }
+      }
+
+      .sparkle {
+        position: fixed;
+        color: gold;
+        font-size: 15px;
+        animation: sparkle 2s linear infinite;
+      }
+
+      @keyframes sparkle {
+        0% {
+          transform: rotate(0deg) scale(0);
+          opacity: 0;
+        }
+        50% {
+          opacity: 1;
+        }
+        100% {
+          transform: rotate(180deg) scale(1.5);
+          opacity: 0;
+        }
+      }
+    </style>
+
+    <div id="container">
+      <h2 id="question">Do you love me?</h2>
+      <h3 class="sub-question" id="q1">Will you be mine forever?</h3>
+      <h3 class="sub-question" id="q2">Do you promise to always care?</h3>
+      <h3 class="sub-question" id="q3">Can I be your everything?</h3>
+      <button id="yes" onclick="yesClick()">Yes</button>
+      <button id="no" onmouseover="moveButton()">No</button>
+    </div>
+
+    <script>
+      // Create floating hearts background
+      function createHeart() {
+        const heart = document.createElement("div");
+        heart.className = "heart";
+        heart.innerHTML = "❤";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.animationDuration = Math.random() * 3 + 3 + "s";
+        document.body.appendChild(heart);
+
+        setTimeout(() => {
+          heart.remove();
+        }, 6000);
+      }
+
+      function createSparkle() {
+        const sparkle = document.createElement("div");
+        sparkle.className = "sparkle";
+        sparkle.innerHTML = "✨";
+        sparkle.style.left = Math.random() * 100 + "vw";
+        sparkle.style.top = Math.random() * 100 + "vh";
+        document.body.appendChild(sparkle);
+
+        setTimeout(() => {
+          sparkle.remove();
+        }, 2000);
+      }
+
+      setInterval(createHeart, 300);
+      setInterval(createSparkle, 500);
+
+      function moveButton() {
+        const noBtn = document.getElementById("no");
+        const maxX = window.innerWidth - noBtn.offsetWidth;
+        const maxY = window.innerHeight - noBtn.offsetHeight;
+
+        const randomX = Math.floor(Math.random() * maxX);
+        const randomY = Math.floor(Math.random() * maxY);
+
+        noBtn.style.position = "fixed";
+        noBtn.style.left = randomX + "px";
+        noBtn.style.top = randomY + "px";
+      }
+
+      let questionIndex = 0;
+      const subQuestions = ["q1", "q2", "q3"];
+
+      function yesClick() {
+        if (questionIndex < subQuestions.length) {
+          document.getElementById(subQuestions[questionIndex]).style.display =
+            "block";
+          questionIndex++;
+        } else {
+          const container = document.getElementById("container");
+          const question = document.getElementById("question");
+
+          document.getElementById("yes").style.display = "none";
+          document.getElementById("no").style.display = "none";
+          subQuestions.forEach(
+            (q) => (document.getElementById(q).style.display = "none")
+          );
+
+          question.textContent = "I love you too! You're my everything! ❤";
+          question.style.fontSize = "2.5em";
+          question.classList.add("success-message");
+
+          for (let i = 0; i < 20; i++) {
+            setTimeout(createHeart, i * 100);
+            setTimeout(createSparkle, i * 150);
+          }
+
+          document.body.style.background =
+            "linear-gradient(45deg, #ff4d6d, #ff8fa3)";
+          container.style.background = "rgba(255, 255, 255, 0.95)";
+        }
+      }
+    </script>
+  </body>
+</html>
